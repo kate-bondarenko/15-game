@@ -1,20 +1,44 @@
-'use strict';
+
 
 const field = document.querySelector('.field');
-const cellSize = 100;
-
-const empty = { 
-    value: 0,
-    top: 0, 
-    left: 0  
-};
-
-const cells = [];
-cells.push(empty);
-
-reset();
-
-function move(index) {
+    const cellSize = 100;
+    const empty = { 
+        value: 0,
+        top: 0, 
+        left: 0  
+    };
+    const cells = [];
+    cells.push(empty);
+         
+    const numbers = [...Array(15).keys()]
+    .sort(() => Math.random() - 0.5);
+    for (let i = 1; i <= 15; i++) {
+        const cell = document.createElement('div');
+        const value = numbers[i - 1] + 1;
+        cell.className = 'cell';
+        cell.innerHTML = numbers[i - 1] + 1;
+    
+        const left = i % 4;
+        const top = (i - left) / 4;
+    
+        cells.push({
+            value: value,
+            left: left,
+            top: top,
+            element: cell
+        });
+    
+        cell.style.left = `${left * cellSize}px`;
+        cell.style.top = `${top * cellSize}px`;
+    
+        field.append(cell);
+    
+        cell.addEventListener('click', () => {
+            move(i);
+        });
+    
+        }
+function move(index) { 
 
     const cell = cells[index];
     const leftDiff = Math.abs(empty.left - cell.left);
@@ -40,38 +64,6 @@ function move(index) {
 
     if(isFinished){
         alert('You won');
-    }
-
-}
-
-function reset(){
-    const numbers = [...Array(15).keys()]
-    .sort(() => Math.random() - 0.5);
-for (let i = 1; i <= 15; i++) {
-    const cell = document.createElement('div');
-    const value = numbers[i - 1] + 1;
-    cell.className = 'cell';
-    cell.innerHTML = numbers[i - 1] + 1;
-
-    const left = i % 4;
-    const top = (i - left) / 4;
-
-    cells.push({
-        value: value,
-        left: left,
-        top: top,
-        element: cell
-    });
-
-    cell.style.left = `${left * cellSize}px`;
-    cell.style.top = `${top * cellSize}px`;
-
-    field.append(cell);
-
-    cell.addEventListener('click', () => {
-        move(i);
-    });
-
     }
 
 }
